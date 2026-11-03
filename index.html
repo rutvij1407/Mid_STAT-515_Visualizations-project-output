@@ -3,93 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>STAT 515 — Redesign Project (Outputs Only)</title>
+<title>STAT 515 Redesign Project</title>
+<meta name="description" content="Redesigning Eurostat unemployment charts: one original chart and two redesigns, with the reasoning behind each change.">
 <style>
-  :root {
-    --bg:#0b1220; --card:#111a2b; --ink:#e8eefc; --muted:#9bb0d1; --accent:#6aa7ff;
-    --border:#1a2640;
-  }
-  html,body {margin:0; padding:0; background:var(--bg); color:var(--ink);
-              font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial; }
-  .container { max-width: 1100px; margin: 40px auto; padding: 0 16px; }
-  header { display:flex; flex-direction:column; gap:8px; margin-bottom: 24px; }
-  h1 { margin: 0; font-size: clamp(24px, 4vw, 36px); }
-  .sub { color: var(--muted); font-size: 14px; }
-  a.link { color: var(--accent); text-decoration: none; }
-  a.link:hover { text-decoration: underline; }
-  .grid { display:grid; grid-template-columns: 1fr; gap: 18px; }
-  @media (min-width: 900px) { .grid { grid-template-columns: 1fr; } }
-  .card { background: var(--card); border:1px solid var(--border);
-           border-radius: 16px; overflow: hidden; box-shadow:0 10px 30px rgba(0,0,0,.25); }
-  figure { margin:0; }
-  img { width: 100%; height: auto; display: block; }
-  .meta { padding: 14px 16px 18px; }
-  .eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: 12px; color: var(--muted); }
-  h2 { margin: 6px 0 8px; font-size: 20px; }
-  .p { margin: 0; color: var(--muted); line-height: 1.5; }
-  footer { margin-top: 26px; color: var(--muted); font-size: 12px; }
-  .badge { display:inline-block; padding:4px 8px; border-radius:999px; font-size:12px;
-            border:1px solid var(--border); background:#0e1730; color:var(--ink); }
+  :root{--bg:#070d1b;--panel:#0e1729;--ink:#e8eefc;--muted:#93a4c4;--line:#1c2a47;--a:#6aa7ff;--b:#34d399}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:radial-gradient(900px 420px at 80% -5%,#1a3a7a44,transparent),var(--bg);color:var(--ink);font:16px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+  .hero{padding:72px 0 30px}
+  .chips span{display:inline-block;font-size:12px;border:1px solid #6aa7ff44;background:#6aa7ff12;color:var(--a);border-radius:999px;padding:4px 12px;margin:0 6px 10px 0}
+  h1{font-size:clamp(32px,5.4vw,54px);line-height:1.08;letter-spacing:-.02em;margin:6px 0 14px}
+  .lead{color:var(--muted);max-width:700px;margin:0 0 24px;font-size:17px}
+  .btns{display:flex;flex-wrap:wrap;gap:10px}
+  .btn{display:inline-flex;gap:8px;align-items:center;text-decoration:none;font-weight:600;font-size:14px;padding:11px 18px;border-radius:12px;border:1px solid var(--line);color:var(--ink);background:var(--panel);transition:.15s}
+  .btn:hover{border-color:var(--a);transform:translateY(-1px)}
+  .btn.primary{background:var(--a);color:#06101f;border-color:var(--a)}
+  .meta{margin-top:18px;color:var(--muted);font-size:13px}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:34px 0 8px}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .step b{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:4px}
+  .step span{font-size:14px;color:var(--muted)}
+  section.fig{margin:56px 0;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:center}
+  section.fig.flip{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}
+  section.fig.flip .shot{order:2}
+  .shot{background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.4);cursor:zoom-in;transition:.2s}
+  .shot:hover{transform:scale(1.012)}
+  .shot img{display:block;width:100%;height:auto}
+  .tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--b);font-weight:700}
+  h2{font-size:26px;line-height:1.2;margin:6px 0 10px;letter-spacing:-.01em}
+  p{margin:0 0 10px;color:var(--muted)}
+  p strong{color:var(--ink)}
+  footer{border-top:1px solid var(--line);margin-top:30px;padding:22px 0 60px;color:var(--muted);font-size:13px}
+  #lb{position:fixed;inset:0;background:#000d;display:none;place-items:center;z-index:20;cursor:zoom-out;padding:20px}
+  #lb img{max-width:100%;max-height:100%;border-radius:12px;background:#fff}
+  #lb.on{display:grid}
+  @media (max-width:820px){section.fig,section.fig.flip{grid-template-columns:1fr;gap:16px}section.fig.flip .shot{order:0}}
 </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>STAT 515 — Redesign Project (Outputs Only)</h1>
-      <div class="sub">
-        <span class="badge">Author: Vakati Rutvij Reddy</span>
-        <span class="badge">Date: October 20, 2025</span>
-      </div>
-      <div class="sub">
-        Full report and code:
-        <p>📄 <a href="report.html">Read the full report (HTML, no R needed)</a></p>
-        <p>📂 <a href="https://github.com/rutvij1407/Mid_STAT-515_Visualizations-project-output" target="_blank" rel="noopener">View the project code on GitHub</a></p>
-        <p>🎥 <a href="https://drive.google.com/file/d/13G-5VPuOsqARhxgVg-IEz1ut1_SdXLFt/view?usp=drive_link" target="_blank">Watch 10-Minute Presentation Video</a></p>
-
-      </div>
-    </header>
-
-    <div class="grid">
-
-      <article class="card">
-        <figure>
-          <img src="figures/fig1_eu_trend.png" alt="Original figure: Unemployment rate by sex, EU, 2015–2024">
-        </figure>
-        <div class="meta">
-          <div class="eyebrow">Original Chart</div>
-          <h2>Unemployment rate by sex, EU, 2015–2024</h2>
-          <p class="p"><strong>Issue noted:</strong> Visual hierarchy not optimal — gridlines dominate over the data; color pairing can reduce contrast for some viewers, and the focus of the narrative is unclear.</p>
-          <p class="p"><em>Goal of redesigns:</em> improve comparison, strengthen focus, and reduce non‑data ink.</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <figure>
-          <img src="figures/fig2_country_2024.png" alt="Redesign 1: Unemployment rate by sex — 2024, EU countries">
-        </figure>
-        <div class="meta">
-          <div class="eyebrow">Redesign A</div>
-          <h2>Country comparison for 2024 (by sex)</h2>
-          <p class="p">Switches to a sorted horizontal bar chart to emphasize <strong>rank and magnitude</strong> across countries. Legibility is improved, and comparisons between male and female rates are more direct.</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <figure>
-          <img src="figures/fig3_long_term.png" alt="Redesign 2: Long-term unemployment (2015–2024), top 12 countries">
-        </figure>
-        <div class="meta">
-          <div class="eyebrow">Redesign B</div>
-          <h2>Long‑term unemployment (≥12 months)</h2>
-          <p class="p">Uses small multiples to show <strong>change over time</strong> for the top 12 countries by 2024 value. The layout reduces overplotting and lets readers scan trends quickly.</p>
-        </div>
-      </article>
-
+<div class="wrap">
+  <header class="hero">
+    <div class="chips"><span>Data visualization</span><span>R and ggplot2</span><span>Eurostat data</span></div>
+    <h1>Redesigning how Europe's unemployment is shown</h1>
+    <p class="lead">One chart where the gridlines shout louder than the data, and two redesigns that put the comparison first. Course project for STAT 515 at George Mason University.</p>
+    <div class="btns">
+      <a class="btn primary" href="report.html">Read the full report</a>
+      <a class="btn" href="https://drive.google.com/file/d/13G-5VPuOsqARhxgVg-IEz1ut1_SdXLFt/view?usp=drive_link" target="_blank" rel="noopener">Watch the 10 minute video</a>
+      <a class="btn" href="https://github.com/rutvij1407/Mid_STAT-515_Visualizations-project-output" target="_blank" rel="noopener">View the code</a>
     </div>
+    <div class="meta">Vakati Rutvij Reddy &middot; October 20, 2025</div>
+    <div class="steps">
+      <div class="step"><b>1 Critique</b><span>Find what weakens the original chart.</span></div>
+      <div class="step"><b>2 Rank</b><span>Sort countries so magnitude is obvious.</span></div>
+      <div class="step"><b>3 Compare over time</b><span>Small multiples make trends scannable.</span></div>
+    </div>
+  </header>
 
-    <footer>
-      Source images generated from Eurostat (une_rt_a, une_ltu_a). This page only displays visualization outputs.
-    </footer>
-  </div>
+  <section class="fig">
+    <div class="shot"><img src="figures/fig1_eu_trend.png" alt="Original figure: Unemployment rate by sex, EU, 2015 to 2024" loading="lazy"></div>
+    <div>
+      <div class="tag">Original chart</div>
+      <h2>Unemployment rate by sex, EU, 2015 to 2024</h2>
+      <p><strong>Issue noted:</strong> the visual hierarchy is weak. Gridlines compete with the data, the colour pairing has low contrast for some viewers, and the focus of the story is unclear.</p>
+      <p>Goal of the redesigns: improve comparison, strengthen focus and reduce non data ink.</p>
+    </div>
+  </section>
+
+  <section class="fig flip">
+    <div class="shot"><img src="figures/fig2_country_2024.png" alt="Redesign A: Unemployment rate by sex in 2024 for EU countries" loading="lazy"></div>
+    <div>
+      <div class="tag">Redesign A</div>
+      <h2>Country comparison for 2024, by sex</h2>
+      <p>A sorted horizontal bar chart that emphasizes <strong>rank and magnitude</strong> across countries. Labels are easier to read, and the male and female rates sit side by side for direct comparison.</p>
+    </div>
+  </section>
+
+  <section class="fig">
+    <div class="shot"><img src="figures/fig3_long_term.png" alt="Redesign B: Long term unemployment 2015 to 2024 for the top 12 countries" loading="lazy"></div>
+    <div>
+      <div class="tag">Redesign B</div>
+      <h2>Long term unemployment (12 months or more)</h2>
+      <p>Small multiples show <strong>change over time</strong> for the 12 countries with the highest 2024 value. The layout reduces overplotting and lets readers scan each trend quickly.</p>
+    </div>
+  </section>
+
+  <footer>Source: Eurostat tables une_rt_a and une_ltu_a. This page shows the visualization outputs only. Click any chart to enlarge it.</footer>
+</div>
+<div id="lb" role="dialog" aria-label="Enlarged chart"><img alt=""></div>
+<script>
+  const lb=document.getElementById('lb'),im=lb.querySelector('img');
+  document.querySelectorAll('.shot img').forEach(i=>i.parentElement.addEventListener('click',()=>{im.src=i.src;im.alt=i.alt;lb.classList.add('on')}));
+  lb.addEventListener('click',()=>lb.classList.remove('on'));
+  addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('on')});
+</script>
 </body>
 </html>
